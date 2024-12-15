@@ -45,7 +45,7 @@ Follow these steps to set up and run the frontend locally:
 
 git clone https://github.com/icekidtech/waiting-list.git
 
-cd frontend
+. cd frontend
 
 2. Install dependencies
 
