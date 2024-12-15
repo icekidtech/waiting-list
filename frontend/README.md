@@ -77,11 +77,11 @@ Contributions are welcome! To contribute:
     Fork the repository.
     Create a new branch:
 
-git checkout -b feature/your-feature-name
+    git checkout -b feature/your-feature-name
 
 Make your changes and commit:
 
-git commit -m "Add your feature"
+    git commit -m "Add your feature"
 
 Push the changes:
 
