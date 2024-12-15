@@ -1,7 +1,8 @@
-Waiting List Application - Frontend (Client)
+# Waiting List Application - Frontend (Client)
 
 This repository contains the frontend code for the Waiting List Application, a web-based project for managing and displaying a waiting list for Brink Gaming. The frontend is built using modern web technologies like React.js and React Router for routing.
-Table of Contents
+
+## Table of Contents
 
     Project Overview
     Features
@@ -12,7 +13,7 @@ Table of Contents
     Contributing
     License
 
-Project Overview
+## Project Overview
 
 The Waiting List App enables users to:
 
@@ -28,7 +29,7 @@ Features
     Dynamic Content Rendering: Fetch and display data dynamically from the backend.
     Admin Panel: For managing users and waiting list entries.
 
-Tech Stack
+## Tech Stack
 
 The frontend is built with the following technologies:
 
@@ -38,7 +39,7 @@ The frontend is built with the following technologies:
     Axios (or fetch API): For making HTTP requests to the backend server.
     Node.js and npm: Development environment and dependency management.
 
-Project Setup
+## Project Setup
 
 Follow these steps to set up and run the frontend locally:
 1. Clone the repository
@@ -51,45 +52,25 @@ git clone https://github.com/icekidtech/waiting-list.git
 
 Make sure you have Node.js and npm installed. Then run:
 
-npm install
+    npm install
 
 3. Start the development server
 
 To run the app in development mode:
 
-npm start
+    npm start
 
 This will open the app at http://localhost:3000 in your browser.
 Available Scripts
 
 Here are the key scripts for the project:
 Command	Description
-npm start	Runs the app in development mode.
-npm build	Builds the app for production.
-npm test	Runs tests for the application.
-npm run lint	Runs ESLint to find and fix linting errors.
-Folder Structure
+    npm start	//Runs the app in development mode.
+    npm build	//Builds the app for production.
+    npm test	//Runs tests for the application.
+    npm run lint	//Runs ESLint to find and fix linting errors.
 
-The project structure is as follows:
-
-frontend/
-│
-├── public/                  # Static assets
-│   ├── index.html           # Root HTML file
-│   └── logo.svg             # Project logo
-│
-├── src/                     # Source files
-│   ├── components/          # Reusable UI components
-│   ├── pages/               # Page components (Home, Signup, etc.)
-│   ├── services/            # API calls (Axios or Fetch)
-│   ├── App.js               # Main React component
-│   ├── index.js             # Entry point for React
-│   └── App.css              # Global styles
-│
-├── package.json             # Project metadata and dependencies
-└── README.md                # Project documentation
-
-Contributing
+## Contributing
 
 Contributions are welcome! To contribute:
 
@@ -108,7 +89,7 @@ Push the changes:
 
     Open a Pull Request.
 
-License
+## License
 
 This project is licensed under the MIT License. See the LICENSE file for more details.
 Contact
