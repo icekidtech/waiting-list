@@ -1,6 +1,6 @@
 // client/src/components/Users.js
 import React, { useEffect, useState } from 'react';
-import api from '../services/api'; // Import the API service
+import api from '../services/api.js'; // Import the API service
 
 function Users() {
   const [users, setUsers] = useState([]);
