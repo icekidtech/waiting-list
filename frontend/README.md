@@ -1,70 +1,119 @@
-# Getting Started with Create React App
+Waiting List Application - Frontend (Client)
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This repository contains the frontend code for the Waiting List Application, a web-based project for managing and displaying a waiting list for Brink Gaming. The frontend is built using modern web technologies like React.js and React Router for routing.
+Table of Contents
 
-## Available Scripts
+    Project Overview
+    Features
+    Tech Stack
+    Project Setup
+    Available Scripts
+    Folder Structure
+    Contributing
+    License
 
-In the project directory, you can run:
+Project Overview
 
-### `npm start`
+The Waiting List App enables users to:
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+    Sign up and join a waiting list.
+    View the waiting list page.
+    Manage user data (admin functionality).
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+This frontend connects with a backend server to process and fetch data, delivering a smooth and interactive user experience.
+Features
 
-### `npm test`
+    Responsive UI: Works on mobile, tablet, and desktop devices.
+    Routing: Multiple pages using React Router v6.
+    Dynamic Content Rendering: Fetch and display data dynamically from the backend.
+    Admin Panel: For managing users and waiting list entries.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Tech Stack
 
-### `npm run build`
+The frontend is built with the following technologies:
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+    React.js: Frontend library for building user interfaces.
+    React Router v6: Routing library for navigating between pages.
+    CSS/SCSS: For styling components and layouts.
+    Axios (or fetch API): For making HTTP requests to the backend server.
+    Node.js and npm: Development environment and dependency management.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Project Setup
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Follow these steps to set up and run the frontend locally:
+1. Clone the repository
 
-### `npm run eject`
+git clone https://github.com/icekidtech/waiting-list.git
+cd frontend
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+2. Install dependencies
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Make sure you have Node.js and npm installed. Then run:
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+npm install
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+3. Start the development server
 
-## Learn More
+To run the app in development mode:
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+npm start
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+This will open the app at http://localhost:3000 in your browser.
+Available Scripts
 
-### Code Splitting
+Here are the key scripts for the project:
+Command	Description
+npm start	Runs the app in development mode.
+npm build	Builds the app for production.
+npm test	Runs tests for the application.
+npm run lint	Runs ESLint to find and fix linting errors.
+Folder Structure
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+The project structure is as follows:
 
-### Analyzing the Bundle Size
+frontend/
+│
+├── public/                  # Static assets
+│   ├── index.html           # Root HTML file
+│   └── logo.svg             # Project logo
+│
+├── src/                     # Source files
+│   ├── components/          # Reusable UI components
+│   ├── pages/               # Page components (Home, Signup, etc.)
+│   ├── services/            # API calls (Axios or Fetch)
+│   ├── App.js               # Main React component
+│   ├── index.js             # Entry point for React
+│   └── App.css              # Global styles
+│
+├── package.json             # Project metadata and dependencies
+└── README.md                # Project documentation
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+Contributing
 
-### Making a Progressive Web App
+Contributions are welcome! To contribute:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+    Fork the repository.
+    Create a new branch:
 
-### Advanced Configuration
+git checkout -b feature/your-feature-name
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+Make your changes and commit:
 
-### Deployment
+git commit -m "Add your feature"
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+Push the changes:
 
-### `npm run build` fails to minify
+    git push origin feature/your-feature-name
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+    Open a Pull Request.
+
+License
+
+This project is licensed under the MIT License. See the LICENSE file for more details.
+Contact
+
+For any inquiries or questions, feel free to reach out:
+
+    Name: Icekid
+    Twitter: @icekidtech
+    Email: edwinidopise@gmail.com
