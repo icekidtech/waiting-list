@@ -10,6 +10,7 @@ const app = express();
 
 // Middleware for parsing JSON and enabling CORS
 app.use(express.json());
+const cors = require('cors');
 app.use(cors());
 
 // Health check route

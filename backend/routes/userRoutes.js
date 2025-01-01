@@ -4,7 +4,7 @@ import { Op } from 'sequelize';
 import User from '../models/User.js';
 import { ensureAuthenticated } from '../middleware/authMiddleware.js';
 import { generateOtp, sendOtpEmail } from '../utils/otpUtils.js';
-import { generateJwtToken } from '../utils/jwtUtils.js'; // Ensure this is defined
+import { generateJwtToken } from '../utils/jwtUtils.js'; // Ensure this is implemented
 
 const router = express.Router();
 
@@ -35,10 +35,7 @@ router.post(
 
       // Create new user
       const otp = generateOtp();
-      const newUser = await User.create({ email, username });
-      await newUser.setOtp(otp);
-
-      // Send OTP via email
+      const newUser = await User.create({ email, username, otp }); // Add OTP to the database
       await sendOtpEmail(email, otp);
 
       return res.status(201).json({
@@ -46,6 +43,7 @@ router.post(
         user: { id: newUser.id, email: newUser.email, username: newUser.username },
       });
     } catch (error) {
+      console.error('Signup error:', error.message);
       return res.status(500).json({ message: 'Error during signup', error: error.message });
     }
   }
@@ -70,13 +68,14 @@ router.post(
       }
 
       const otp = generateOtp();
-      await user.setOtp(otp);
+      user.otp = otp; // Update OTP in the database
       await user.save();
 
       await sendOtpEmail(email, otp);
 
       return res.status(200).json({ message: 'OTP sent to your email. Please use it to log in.' });
     } catch (error) {
+      console.error('Login error:', error.message);
       return res.status(500).json({ message: 'Error during login', error: error.message });
     }
   }
@@ -98,15 +97,18 @@ router.post(
         return res.status(404).json({ message: 'User not found' });
       }
 
-      const isValid = await user.validateOtp(otp);
-      if (!isValid) {
+      if (user.otp !== otp) {
         return res.status(401).json({ message: 'Invalid or expired OTP' });
       }
+
+      user.otp = null; // Clear OTP after successful verification
+      await user.save();
 
       const token = generateJwtToken(user.id);
 
       return res.status(200).json({ message: 'Login successful', token });
     } catch (error) {
+      console.error('Verify OTP error:', error.message);
       return res.status(500).json({ message: 'Error verifying OTP', error: error.message });
     }
   }
@@ -119,6 +121,7 @@ router.get('/', ensureAuthenticated, async (req, res) => {
 
     return res.status(200).json(users);
   } catch (error) {
+    console.error('Fetch users error:', error.message);
     return res.status(500).json({ message: 'Error fetching users', error: error.message });
   }
 });
@@ -144,6 +147,7 @@ router.get('/dashboard', ensureAuthenticated, async (req, res) => {
       },
     });
   } catch (error) {
+    console.error('Dashboard error:', error.message);
     return res.status(500).json({ message: 'Error loading dashboard', error: error.message });
   }
 });

@@ -1,19 +1,15 @@
 import React, { useState } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
-import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import api from "../services/api.js"
 
 function AuthPage() {
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
-  const token = searchParams.get("token");
 
-  const [formType, setFormType] = useState("signup"); // 'signup', 'login', 'requestReset', 'confirmReset'
+  const [formType, setFormType] = useState("signup"); // 'signup', 'verifySignup', 'login', 'verifyLogin'
   const [formData, setFormData] = useState({
     username: "",
-    fullName: "",
     email: "",
-    password: "",
-    newPassword: "",
+    otp: "",
   });
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
@@ -23,25 +19,20 @@ function AuthPage() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  // Submit Signup or Login
-  const handleAuthSubmit = async (e) => {
+  // Submit Signup or Login Request
+  const handleAuthRequest = async (e) => {
     e.preventDefault();
     try {
-      const endpoint = formType === "signup" ? "/api/signup" : "/api/login";
-      const payload =
-        formType === "signup"
-          ? { username: formData.username, fullName: formData.fullName, email: formData.email, password: formData.password }
-          : { email: formData.email, password: formData.password };
-      const response = await axios.post(endpoint, payload);
+      const endpoint = formType === "signup" ? "/api/auth/signup" : "/api/auth/login";
+      const payload = formType === "signup"
+        ? { username: formData.username, email: formData.email }
+        : { email: formData.email };
+
+      const response = await api.post(endpoint, payload);
 
       if (response.data.success) {
-        if (formType === "login") {
-          localStorage.setItem("token", response.data.token); // Save token
-          navigate("/dashboard"); // Redirect
-        } else {
-          setMessage("Signup successful. Please log in.");
-          setFormType("login");
-        }
+        setMessage(response.data.message || "OTP sent to your email.");
+        setFormType(formType === "signup" ? "verifySignup" : "verifyLogin");
         setError("");
       }
     } catch (err) {
@@ -50,30 +41,21 @@ function AuthPage() {
     }
   };
 
-  // Submit Password Reset Request
-  const handleRequestReset = async (e) => {
+  // Verify OTP for Signup or Login
+  const handleOTPVerification = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("/api/password-reset/request", { email: formData.email });
-      setMessage(response.data.message);
-      setError("");
-      setFormType("login");
-    } catch (err) {
-      setError(err.response?.data?.message || "An error occurred.");
-      setMessage("");
-    }
-  };
+      const endpoint = formType === "verifySignup" ? "/api/auth/verify-signup" : "/api/auth/verify-login";
+      const payload = { email: formData.email, otp: formData.otp };
 
-  // Submit Password Reset Confirmation
-  const handleConfirmReset = async (e) => {
-    e.preventDefault();
-    try {
-      const response = await axios.post("/api/password-reset/confirm", { token, newPassword: formData.newPassword });
-      setMessage(response.data.message);
-      setError("");
-      setFormType("login");
+      const response = await api.post(endpoint, payload);
+
+      if (response.data.success) {
+        localStorage.setItem("token", response.data.token); // Save token
+        navigate("/dashboard"); // Redirect to the dashboard
+      }
     } catch (err) {
-      setError(err.response?.data?.message || "An error occurred.");
+      setError(err.response?.data?.message || "Invalid OTP.");
       setMessage("");
     }
   };
@@ -83,50 +65,30 @@ function AuthPage() {
       <h1>
         {formType === "signup"
           ? "Sign Up"
+          : formType === "verifySignup"
+          ? "Verify Signup"
           : formType === "login"
           ? "Log In"
-          : formType === "requestReset"
-          ? "Request Password Reset"
-          : "Reset Password"}
+          : "Verify Login"}
       </h1>
 
       {message && <p style={{ color: "green" }}>{message}</p>}
       {error && <p style={{ color: "red" }}>{error}</p>}
 
-      <form
-        onSubmit={
-          formType === "requestReset"
-            ? handleRequestReset
-            : formType === "confirmReset"
-            ? handleConfirmReset
-            : handleAuthSubmit
-        }
-      >
+      <form onSubmit={formType === "signup" || formType === "login" ? handleAuthRequest : handleOTPVerification}>
         {formType === "signup" && (
-          <>
-            <div>
-              <input
-                type="text"
-                name="username"
-                placeholder="Username"
-                value={formData.username}
-                onChange={handleChange}
-                required
-              />
-            </div>
-            <div>
-              <input
-                type="text"
-                name="fullName"
-                placeholder="Full Name"
-                value={formData.fullName}
-                onChange={handleChange}
-                required
-              />
-            </div>
-          </>
+          <div>
+            <input
+              type="text"
+              name="username"
+              placeholder="Username"
+              value={formData.username}
+              onChange={handleChange}
+              required
+            />
+          </div>
         )}
-        {(formType === "signup" || formType === "login" || formType === "requestReset") && (
+        {(formType === "signup" || formType === "login" || formType.includes("verify")) && (
           <div>
             <input
               type="email"
@@ -138,25 +100,13 @@ function AuthPage() {
             />
           </div>
         )}
-        {(formType === "signup" || formType === "login") && (
+        {formType.includes("verify") && (
           <div>
             <input
-              type="password"
-              name="password"
-              placeholder="Password"
-              value={formData.password}
-              onChange={handleChange}
-              required
-            />
-          </div>
-        )}
-        {formType === "confirmReset" && (
-          <div>
-            <input
-              type="password"
-              name="newPassword"
-              placeholder="New Password"
-              value={formData.newPassword}
+              type="text"
+              name="otp"
+              placeholder="Enter OTP"
+              value={formData.otp}
               onChange={handleChange}
               required
             />
@@ -167,9 +117,7 @@ function AuthPage() {
             ? "Sign Up"
             : formType === "login"
             ? "Log In"
-            : formType === "requestReset"
-            ? "Request Reset"
-            : "Reset Password"}
+            : "Verify"}
         </button>
       </form>
 
@@ -183,34 +131,10 @@ function AuthPage() {
           </p>
         )}
         {formType === "login" && (
-          <>
-            <p>
-              Don't have an account?{" "}
-              <span onClick={() => setFormType("signup")} style={{ cursor: "pointer", color: "blue" }}>
-                Sign Up
-              </span>
-            </p>
-            <p>
-              Forgot your password?{" "}
-              <span onClick={() => setFormType("requestReset")} style={{ cursor: "pointer", color: "blue" }}>
-                Reset Password
-              </span>
-            </p>
-          </>
-        )}
-        {formType === "requestReset" && (
           <p>
-            Remembered your password?{" "}
-            <span onClick={() => setFormType("login")} style={{ cursor: "pointer", color: "blue" }}>
-              Log In
-            </span>
-          </p>
-        )}
-        {formType === "confirmReset" && (
-          <p>
-            Reset successful?{" "}
-            <span onClick={() => setFormType("login")} style={{ cursor: "pointer", color: "blue" }}>
-              Log In
+            Don't have an account?{" "}
+            <span onClick={() => setFormType("signup")} style={{ cursor: "pointer", color: "blue" }}>
+              Sign Up
             </span>
           </p>
         )}
